@@ -1,0 +1,23 @@
+services:
+  vibe-kanban:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Image runs as appuser uid 10001 (Dockerfile:133,142), but bind mounts keep
+    # host ownership (uid 1000) and mask the Dockerfile's `chown /repos`.
+    # Without this the server cannot create db.v2.sqlite or write git worktrees.
+    user: "${VK_UID:-1000}:${VK_GID:-1000}"
+    ports:
+      - "127.0.0.1:${VK_PORT:-3000}:3000"
+    environment:
+      XDG_DATA_HOME: /vk-data
+      XDG_CACHE_HOME: /vk-cache
+      HOST: 0.0.0.0
+      PORT: 3000
+      VK_ALLOWED_ORIGINS: http://localhost:${VK_PORT:-3000}
+    volumes:
+      - ${VK_DATA_DIR:-${HOME}/.vk-data}:/vk-data/vibe-kanban
+      - ${VK_CACHE_DIR:-${HOME}/.vk-cache}:/vk-cache:rw
+      - ${VK_REPOS_DIR:-${HOME}/workspaces}:/repos:rw
+    # No healthcheck block: Dockerfile:149 already defines an identical one.
+    restart: unless-stopped

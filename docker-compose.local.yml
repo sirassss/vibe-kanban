@@ -1,0 +1,23 @@
+services:
+  vibe-kanban:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # Image default user is appuser (uid 10001). Override to host uid:gid so the
+    # process can write bind-mounted /repos worktrees. Data/cache use XDG env vars
+    # and mounts below (not /home/appuser).
+    user: "${VK_UID:-1000}:${VK_GID:-1000}"
+    ports:
+      - "127.0.0.1:${VK_PORT:-3000}:3000"
+    environment:
+      XDG_DATA_HOME: /vk-data
+      XDG_CACHE_HOME: /vk-cache
+      HOST: 0.0.0.0
+      PORT: 3000
+      VK_ALLOWED_ORIGINS: http://localhost:${VK_PORT:-3000}
+    volumes:
+      - ${VK_DATA_DIR:-${HOME}/.vk-data}:/vk-data/vibe-kanban
+      - ${VK_CACHE_DIR:-${HOME}/.vk-cache}:/vk-cache:rw
+      - ${VK_REPOS_DIR:-${HOME}/workspaces}:/repos:rw
+    # No healthcheck block: Dockerfile runtime stage already defines one.
+    restart: unless-stopped

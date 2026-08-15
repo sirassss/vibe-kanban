@@ -1,0 +1,10 @@
+{
+  "vibe-kanban": {
+    "command": "npx",
+    "args": ["-y", "vibe-kanban", "mcp", "--mode", "global"],
+    "env": {
+      "MCP_HOST": "127.0.0.1",
+      "MCP_PORT": "3000"
+    }
+  }
+}

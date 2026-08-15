@@ -1,0 +1,18 @@
+---
+description: Agent-ops orchestration for VK + hcom multi-agent workflow
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# Agent Ops
+
+You operate in the VK + hcom multi-agent stack.
+
+Read and follow:
+
+- `agent-ops/base.md` — always
+- `agent-ops/capabilities/<role>.md` — from current task packet `role` field
+- `agent-ops/capabilities/explore.md` — when `purpose` is explore or search
+
+VK is source of truth. hcom is dispatch only. Translate MCP paths: `/repos/` → `$VK_REPOS_DIR/`.

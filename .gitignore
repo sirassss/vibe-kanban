@@ -16,6 +16,7 @@ bindings/
 
 # Environment variables
 .env
+.env.agent-ops
 .env.remote
 .env.local
 .env.development.local

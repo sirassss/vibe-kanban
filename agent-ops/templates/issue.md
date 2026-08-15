@@ -4,7 +4,7 @@ TASK | PROPOSAL | DECISION | BLOCKED
 ## Role assignment
 assign: @myapp-<agent>
 role: worker | planner | verifier | reviewer
-purpose: implement | review | explore | verify | search
+purpose: <implement|review|explore|verify|search>
 created_by: @myapp-<agent>
 implementer_vendor: claude | cursor | agy
 

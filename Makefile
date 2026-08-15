@@ -19,7 +19,7 @@ logs:
 	docker compose -f $(COMPOSE_FILE) --env-file $(ENV_FILE) logs -f
 
 agents-up:
-	@test -f scripts/spawn-agents.sh || (echo "run after Task 9" && exit 1)
+	@test -f scripts/spawn-agents.sh || (echo "scripts/spawn-agents.sh not found" && exit 1)
 	@bash scripts/spawn-agents.sh
 
 agents-down:

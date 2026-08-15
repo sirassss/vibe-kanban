@@ -3,9 +3,9 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    # Image runs as appuser uid 10001 (Dockerfile:133,142), but bind mounts keep
-    # host ownership (uid 1000) and mask the Dockerfile's `chown /repos`.
-    # Without this the server cannot create db.v2.sqlite or write git worktrees.
+    # Image default user is appuser (uid 10001). Override to host uid:gid so the
+    # process can write bind-mounted /repos worktrees. Data/cache use XDG env vars
+    # and mounts below (not /home/appuser).
     user: "${VK_UID:-1000}:${VK_GID:-1000}"
     ports:
       - "127.0.0.1:${VK_PORT:-3000}:3000"
@@ -19,5 +19,5 @@ services:
       - ${VK_DATA_DIR:-${HOME}/.vk-data}:/vk-data/vibe-kanban
       - ${VK_CACHE_DIR:-${HOME}/.vk-cache}:/vk-cache:rw
       - ${VK_REPOS_DIR:-${HOME}/workspaces}:/repos:rw
-    # No healthcheck block: Dockerfile:149 already defines an identical one.
+    # No healthcheck block: Dockerfile runtime stage already defines one.
     restart: unless-stopped
